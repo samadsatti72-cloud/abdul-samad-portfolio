@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Abdul Samad — Visual Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#020408;
+  --c1:#00f0ff;
+  --c2:#ff006e;
+  --c3:#7b00ff;
+  --c4:#00ff88;
+  --text:#e0f4ff;
+  --muted:#3a5a6a;
+  --grid:rgba(0,240,255,0.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CANVAS */
+#particleCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* GRID */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+}
+
+/* SCANLINES */
+body::after{
+  content:'';position:fixed;inset:0;z-index:2;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);
+  pointer-events:none;
+}
+
+/* CURSOR */
+#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;}
+.cur-ring{position:absolute;transform:translate(-50%,-50%);width:48px;height:48px;border:1px solid rgba(0,240,255,0.5);border-radius:50%;transition:all 0.15s ease-out;}
+.cur-cross{position:absolute;transform:translate(-50%,-50%);width:20px;height:20px;}
+.cur-cross::before,.cur-cross::after{content:'';position:absolute;background:var(--c1);}
+.cur-cross::before{width:100%;height:1px;top:50%;left:0;transform:translateY(-50%);}
+.cur-cross::after{width:1px;height:100%;left:50%;top:0;transform:translateX(-50%);}
+.cur-dot{position:absolute;transform:translate(-50%,-50%);width:4px;height:4px;background:var(--c1);border-radius:50%;box-shadow:0 0 8px var(--c1);}
+body:has(a:hover) .cur-ring,body:has(button:hover) .cur-ring{width:66px;height:66px;border-color:var(--c2);}
+body:has(a:hover) .cur-cross::before,body:has(a:hover) .cur-cross::after,
+body:has(button:hover) .cur-cross::before,body:has(button:hover) .cur-cross::after{background:var(--c2);}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.8s,visibility 0.8s;}
+#loader.done{opacity:0;visibility:hidden;}
+.l-logo{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;color:var(--c1);text-shadow:0 0 30px var(--c1),0 0 60px var(--c1);letter-spacing:6px;animation:glowPulse 1.5s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{text-shadow:0 0 20px var(--c1),0 0 40px var(--c1)}50%{text-shadow:0 0 50px var(--c1),0 0 100px var(--c1)}}
+.l-bar-wrap{width:280px;height:2px;background:rgba(0,240,255,0.1);}
+.l-bar{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));width:0%;animation:lp 2s ease-out forwards;box-shadow:0 0 10px var(--c1);}
+@keyframes lp{to{width:100%}}
+.l-txt{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--muted);letter-spacing:3px;animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 60px;background:rgba(2,4,8,0.75);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,0.07);}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent);opacity:0.3;}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--c1);text-decoration:none;letter-spacing:4px;text-shadow:0 0 15px var(--c1);position:relative;}
+.nav-logo::after{content:'[DESIGNER]';position:absolute;top:100%;left:0;font-size:0.5rem;color:var(--muted);letter-spacing:3px;margin-top:2px;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;font-family:'Orbitron',sans-serif;transition:color 0.3s,text-shadow 0.3s;position:relative;}
+.nav-links a::before{content:attr(data-num);position:absolute;top:-14px;left:0;font-size:0.45rem;color:var(--c1);opacity:0.5;}
+.nav-links a:hover{color:var(--c1);text-shadow:0 0 12px var(--c1);}
+.nav-hire{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;padding:10px 22px;border:1px solid var(--c1);color:var(--c1);background:transparent;cursor:none;text-decoration:none;position:relative;overflow:hidden;transition:color 0.3s;clip-path:polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px);}
+.nav-hire::before{content:'';position:absolute;inset:0;background:var(--c1);transform:translateX(-100%);transition:transform 0.3s;}
+.nav-hire:hover{color:#000;}
+.nav-hire:hover::before{transform:translateX(0);}
+.nav-hire span{position:relative;z-index:1;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:140px 60px 80px;position:relative;overflow:hidden;}
+.hc{position:absolute;width:100px;height:100px;opacity:0.5;}
+.hc.tl{top:90px;left:40px;border-top:1px solid var(--c1);border-left:1px solid var(--c1);}
+.hc.tr{top:90px;right:40px;border-top:1px solid var(--c2);border-right:1px solid var(--c2);}
+.hc.br{bottom:40px;right:40px;border-bottom:1px solid var(--c1);border-right:1px solid var(--c1);}
+.hc.bl{bottom:40px;left:40px;border-bottom:1px solid var(--c2);border-left:1px solid var(--c2);}
+
+.hero-sys{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--c4);letter-spacing:2px;margin-bottom:20px;opacity:0;animation:fadeUp 0.6s 2.5s ease both;}
+.hero-sys span{color:var(--muted);}
+
+.glitch-wrap{opacity:0;animation:fadeUp 0.7s 2.6s ease both;position:relative;}
+.hero-name{font-family:'Orbitron',sans-serif;font-size:clamp(48px,8vw,115px);font-weight:900;line-height:0.9;letter-spacing:2px;color:var(--text);position:relative;animation:glitchBase 6s infinite;}
+.hero-name::before,.hero-name::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Orbitron',sans-serif;font-size:inherit;font-weight:900;}
+.hero-name::before{color:var(--c2);animation:glitch1 6s infinite;clip-path:polygon(0 15%,100% 15%,100% 35%,0 35%);}
+.hero-name::after{color:var(--c1);animation:glitch2 6s infinite;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%);}
+@keyframes glitchBase{0%,88%,100%{transform:translate(0)}89%{transform:translate(-2px,1px)}91%{transform:translate(2px,-1px)}93%{transform:translate(0)}}
+@keyframes glitch1{0%,88%,100%{transform:translate(0);opacity:0}89%{transform:translate(4px,-2px);opacity:0.85}91%{transform:translate(-4px,2px);opacity:0.85}93%{opacity:0}}
+@keyframes glitch2{0%,88%,100%{transform:translate(0);opacity:0}89%{transform:translate(-5px,1px);opacity:0.85}91%{transform:translate(5px,-1px);opacity:0.85}93%{opacity:0}}
+
+.hero-sub{font-family:'Orbitron',sans-serif;font-size:clamp(13px,1.8vw,20px);font-weight:400;letter-spacing:8px;color:var(--c1);text-shadow:0 0 20px var(--c1);margin-top:12px;opacity:0;animation:fadeUp 0.7s 2.8s ease both;}
+.typewriter-wrap{margin-top:28px;font-family:'Share Tech Mono',monospace;font-size:0.95rem;color:var(--muted);letter-spacing:2px;opacity:0;animation:fadeUp 0.6s 3s ease both;}
+#typeText{color:var(--c4);}
+.cblink{display:inline-block;width:2px;height:1em;background:var(--c1);vertical-align:middle;margin-left:3px;animation:blink 0.8s step-end infinite;}
+
+.hero-metrics{display:flex;gap:36px;margin-top:48px;opacity:0;animation:fadeUp 0.7s 3.2s ease both;flex-wrap:wrap;}
+.metric{padding:18px 26px;background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.12);clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);transition:background 0.3s,border-color 0.3s;}
+.metric:hover{background:rgba(0,240,255,0.07);border-color:rgba(0,240,255,0.35);}
+.metric-num{font-family:'Orbitron',sans-serif;font-size:1.9rem;font-weight:900;color:var(--c1);text-shadow:0 0 20px var(--c1);line-height:1;}
+.metric-label{font-size:0.62rem;letter-spacing:2px;color:var(--muted);margin-top:4px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;}
+
+.hero-cta{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.6s 3.4s ease both;}
+.btn-neon{font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:3px;padding:13px 30px;background:transparent;border:1px solid var(--c1);color:var(--c1);text-decoration:none;cursor:none;position:relative;overflow:hidden;clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);transition:color 0.3s;display:inline-block;}
+.btn-neon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--c1),var(--c3));transform:translateX(-100%);transition:transform 0.35s ease;}
+.btn-neon:hover{color:#000;}
+.btn-neon:hover::before{transform:translateX(0);}
+.btn-neon span{position:relative;z-index:1;}
+.btn-ghost2{font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:3px;padding:13px 30px;border:1px solid rgba(255,255,255,0.09);color:var(--muted);text-decoration:none;cursor:none;display:inline-block;transition:border-color 0.3s,color 0.3s;clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);}
+.btn-ghost2:hover{border-color:var(--c2);color:var(--c2);}
+
+/* MARQUEE */
+.mq{border-top:1px solid rgba(0,240,255,0.07);border-bottom:1px solid rgba(0,240,255,0.07);overflow:hidden;padding:14px 0;background:rgba(0,240,255,0.015);position:relative;z-index:3;}
+.mq-track{display:flex;gap:48px;animation:marquee 22s linear infinite;white-space:nowrap;}
+.mq-track span{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.mq-track .sep{color:var(--c1);font-size:0.75rem;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{padding:100px 60px;position:relative;z-index:3;}
+.sec-head{margin-bottom:56px;}
+.sec-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--c1);letter-spacing:4px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-tag::before{content:'';width:28px;height:1px;background:var(--c1);box-shadow:0 0 8px var(--c1);}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:clamp(34px,5vw,62px);font-weight:900;line-height:1;letter-spacing:2px;}
+.sec-title .hollow{-webkit-text-stroke:1px rgba(0,240,255,0.35);color:transparent;}
+.sec-line{width:56px;height:2px;background:linear-gradient(90deg,var(--c1),var(--c2));margin-top:14px;box-shadow:0 0 10px var(--c1);}
+
+/* SERVICES */
+#services{background:rgba(0,8,16,0.6);}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.07);}
+.svc{background:var(--bg);padding:40px 30px;position:relative;overflow:hidden;transition:background 0.4s;}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.5s;box-shadow:0 0 8px var(--c1);}
+.svc::after{content:attr(data-num);position:absolute;top:18px;right:22px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,240,255,0.12);letter-spacing:2px;}
+.svc:hover{background:rgba(0,240,255,0.035);}
+.svc:hover::before{transform:scaleX(1);}
+.svc-icon{width:46px;height:46px;margin-bottom:22px;border:1px solid rgba(0,240,255,0.18);display:flex;align-items:center;justify-content:center;font-size:1.3rem;clip-path:polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px);background:rgba(0,240,255,0.04);transition:all 0.3s;}
+.svc:hover .svc-icon{background:rgba(0,240,255,0.1);border-color:var(--c1);box-shadow:0 0 18px rgba(0,240,255,0.18);}
+.svc-title{font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:2px;margin-bottom:12px;}
+.svc-desc{color:var(--muted);font-size:0.86rem;line-height:1.8;font-weight:300;}
+
+/* PORTFOLIO */
+#portfolio{}
+.upload-zone{border:1px dashed rgba(0,240,255,0.22);padding:34px;text-align:center;transition:all 0.3s;cursor:pointer;margin-bottom:32px;background:rgba(0,240,255,0.015);position:relative;clip-path:polygon(16px 0%,100% 0%,100% calc(100% - 16px),calc(100% - 16px) 100%,0% 100%,0% 16px);}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--c1);background:rgba(0,240,255,0.05);box-shadow:inset 0 0 30px rgba(0,240,255,0.04);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:1.8rem;margin-bottom:10px;color:var(--c1);text-shadow:0 0 20px var(--c1);}
+.upload-text{font-family:'Orbitron',sans-serif;font-size:0.75rem;letter-spacing:2px;color:var(--c1);margin-bottom:6px;}
+.upload-sub{color:var(--muted);font-size:0.7rem;letter-spacing:1px;font-family:'Share Tech Mono',monospace;}
+.p-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.p-item{position:relative;aspect-ratio:4/3;background:rgba(0,240,255,0.02);border:1px solid rgba(0,240,255,0.09);overflow:hidden;transition:border-color 0.3s,box-shadow 0.3s;cursor:none;}
+.p-item:hover{border-color:rgba(0,240,255,0.35);box-shadow:0 0 25px rgba(0,240,255,0.08);}
+.p-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease;}
+.p-item:hover img{transform:scale(1.07);}
+.p-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,4,8,0.95) 0%,rgba(2,4,8,0.3) 50%,transparent 100%);opacity:0;transition:opacity 0.4s;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;}
+.p-item:hover .p-overlay{opacity:1;}
+.p-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent);box-shadow:0 0 8px var(--c1);transform:translateY(-100%);}
+.p-item:hover .p-scan{animation:scanLine 0.9s ease-out forwards;}
+@keyframes scanLine{0%{transform:translateY(0%);opacity:1}100%{transform:translateY(3500%);opacity:0}}
+.p-title{font-family:'Orbitron',sans-serif;font-size:0.8rem;letter-spacing:2px;font-weight:700;}
+.p-cat{color:var(--c1);font-size:0.6rem;letter-spacing:3px;margin-top:4px;font-family:'Share Tech Mono',monospace;}
+.p-del{position:absolute;top:10px;right:10px;background:rgba(255,0,110,0.85);border:none;width:24px;height:24px;color:white;font-size:0.65rem;cursor:pointer;display:none;align-items:center;justify-content:center;clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);}
+.p-item:hover .p-del{display:flex;}
+.p-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;padding:20px;text-align:center;}
+.ph-icon{font-size:1.8rem;color:rgba(0,240,255,0.18);}
+.ph-txt{color:var(--muted);font-size:0.68rem;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.ph-b{position:absolute;inset:0;pointer-events:none;}
+.ph-b::before{content:'';position:absolute;top:8px;left:8px;width:18px;height:18px;border-top:1px solid rgba(0,240,255,0.25);border-left:1px solid rgba(0,240,255,0.25);}
+.ph-b::after{content:'';position:absolute;bottom:8px;right:8px;width:18px;height:18px;border-bottom:1px solid rgba(0,240,255,0.25);border-right:1px solid rgba(0,240,255,0.25);}
+
+/* SKILLS */
+#skills{background:rgba(0,0,18,0.55);}
+.sk-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.skill-item{margin-bottom:26px;}
+.skill-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.skill-name{font-family:'Orbitron',sans-serif;font-size:0.7rem;letter-spacing:2px;}
+.skill-val{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--c1);text-shadow:0 0 8px var(--c1);}
+.skill-track{height:2px;background:rgba(0,240,255,0.07);position:relative;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));transform:scaleX(0);transform-origin:left;transition:transform 1.5s cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 10px var(--c1);position:relative;}
+.skill-fill::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--c1);border-radius:50%;box-shadow:0 0 10px var(--c1);}
+.skill-fill.on{transform:scaleX(1);}
+.hex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.hex-tool{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:rgba(0,240,255,0.025);border:1px solid rgba(0,240,255,0.09);clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);cursor:none;transition:all 0.3s;position:relative;overflow:hidden;}
+.hex-tool::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--c1),var(--c3));opacity:0;transition:opacity 0.3s;}
+.hex-tool:hover{border-color:var(--c1);box-shadow:0 0 18px rgba(0,240,255,0.12);}
+.hex-tool:hover::before{opacity:0.07;}
+.hex-tool span:first-child{font-size:1.5rem;position:relative;z-index:1;}
+.hex-tool span:last-child{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;color:var(--muted);text-align:center;position:relative;z-index:1;line-height:1.3;}
+.hex-tool:hover span:last-child{color:var(--c1);}
+
+/* ABOUT */
+#about{}
+.ab-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-text p{color:var(--muted);line-height:2;margin-bottom:14px;font-size:0.98rem;}
+.about-text p strong{color:var(--text);}
+.ab-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px;}
+.a-stat{padding:18px 14px;text-align:center;background:rgba(0,240,255,0.025);border:1px solid rgba(0,240,255,0.09);clip-path:polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px);transition:background 0.3s,border-color 0.3s;}
+.a-stat:hover{background:rgba(0,240,255,0.07);border-color:rgba(0,240,255,0.3);}
+.a-num{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;color:var(--c1);text-shadow:0 0 18px var(--c1);line-height:1;}
+.a-label{color:var(--muted);font-size:0.6rem;letter-spacing:2px;margin-top:5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;}
+
+.holo-card{position:relative;height:380px;background:rgba(0,240,255,0.018);border:1px solid rgba(0,240,255,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden;transition:transform 0.1s ease;}
+.holo-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(0,240,255,0.07) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(123,0,255,0.05) 0%,transparent 60%);animation:holoPulse 4s ease-in-out infinite;}
+@keyframes holoPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+.holo-card::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,240,255,0.05),transparent);animation:holoSheen 4s linear infinite;}
+@keyframes holoSheen{to{left:200%}}
+.holo-corner{position:absolute;width:18px;height:18px;}
+.holo-corner.tl{top:12px;left:12px;border-top:1px solid var(--c1);border-left:1px solid var(--c1);}
+.holo-corner.br{bottom:12px;right:12px;border-bottom:1px solid var(--c1);border-right:1px solid var(--c1);}
+.holo-corner.tr{top:12px;right:12px;border-top:1px solid var(--c2);border-right:1px solid var(--c2);}
+.holo-corner.bl{bottom:12px;left:12px;border-bottom:1px solid var(--c2);border-left:1px solid var(--c2);}
+.holo-name{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;color:var(--c1);text-shadow:0 0 20px var(--c1);letter-spacing:4px;position:relative;z-index:1;animation:glowPulse 3s ease-in-out infinite;}
+.holo-role{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:4px;position:relative;z-index:1;}
+.holo-langs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
+.hlang{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:2px;padding:5px 12px;border:1px solid rgba(0,240,255,0.18);color:var(--c4);clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);}
+.holo-link{font-family:'Orbitron',sans-serif;font-size:0.58rem;letter-spacing:2px;padding:10px 20px;border:1px solid var(--c1);color:var(--c1);text-decoration:none;position:relative;z-index:1;transition:background 0.3s;clip-path:polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px);}
+.holo-link:hover{background:rgba(0,240,255,0.12);}
+
+/* CONTACT */
+#contact{background:rgba(0,0,16,0.4);}
+.ct-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;}
+.c-item{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(0,240,255,0.05);}
+.c-icon-box{width:42px;height:42px;flex-shrink:0;background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.12);display:flex;align-items:center;justify-content:center;font-size:1rem;clip-path:polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px);transition:all 0.3s;}
+.c-item:hover .c-icon-box{background:rgba(0,240,255,0.1);border-color:var(--c1);box-shadow:0 0 14px rgba(0,240,255,0.18);}
+.c-lbl{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.c-val{font-size:0.9rem;margin-top:3px;}
+.c-val a{color:var(--text);text-decoration:none;transition:color 0.3s;}
+.c-val a:hover{color:var(--c1);}
+.cform{display:flex;flex-direction:column;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg label{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:3px;color:var(--muted);}
+.fg input,.fg textarea{background:rgba(0,240,255,0.025);border:1px solid rgba(0,240,255,0.09);padding:13px 15px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;outline:none;resize:none;transition:border-color 0.3s,box-shadow 0.3s;clip-path:polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px);}
+.fg input:focus,.fg textarea:focus{border-color:rgba(0,240,255,0.35);box-shadow:0 0 18px rgba(0,240,255,0.06);}
+.fg textarea{height:108px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sbtn{font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:3px;padding:13px 30px;align-self:flex-start;background:transparent;border:1px solid var(--c1);color:var(--c1);cursor:pointer;position:relative;overflow:hidden;clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);transition:color 0.3s;}
+.sbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--c1),var(--c3));transform:translateX(-100%);transition:transform 0.35s;}
+.sbtn:hover{color:#000;}
+.sbtn:hover::before{transform:translateX(0);}
+.sbtn span{position:relative;z-index:1;}
+.form-ok{display:none;padding:28px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.85rem;letter-spacing:2px;color:var(--c4);border:1px solid rgba(0,255,136,0.18);clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);}
+
+/* FOOTER */
+footer{padding:26px 60px;border-top:1px solid rgba(0,240,255,0.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;z-index:3;background:rgba(2,4,8,0.8);}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c1),var(--c2),transparent);opacity:0.25;}
+.f-logo{font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:5px;color:var(--c1);text-shadow:0 0 12px var(--c1);}
+.f-copy{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:2px;}
+.f-links{display:flex;gap:22px;}
+.f-links a{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.3s;}
+.f-links a:hover{color:var(--c1);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s ease,transform 0.9s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:18px 20px;} .nav-links{display:none;}
+  #hero{padding:120px 20px 60px;} section{padding:70px 20px;}
+  .svc-grid{grid-template-columns:1fr;} .sk-layout{grid-template-columns:1fr;}
+  .ab-layout{grid-template-columns:1fr;} .ct-layout{grid-template-columns:1fr;}
+  .hc{display:none;} footer{padding:20px;flex-direction:column;text-align:center;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-logo">A·S</div>
+  <div class="l-bar-wrap"><div class="l-bar"></div></div>
+  <div class="l-txt">INITIALIZING PORTFOLIO SYSTEM...</div>
+</div>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- CURSOR -->
+<div id="cur">
+  <div class="cur-ring" id="cRing"></div>
+  <div class="cur-cross" id="cCross"></div>
+  <div class="cur-dot" id="cDot"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">SAMAD</a>
+  <ul class="nav-links">
+    <li><a href="#services" data-num="01">Services</a></li>
+    <li><a href="#portfolio" data-num="02">Work</a></li>
+    <li><a href="#skills" data-num="03">Skills</a></li>
+    <li><a href="#about" data-num="04">About</a></li>
+    <li><a href="#contact" data-num="05">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-hire"><span>HIRE ME</span></a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hc tl"></div><div class="hc tr"></div>
+  <div class="hc br"></div><div class="hc bl"></div>
+  <div class="hero-sys"><span>SYS://</span>PORTFOLIO_V3.0 &nbsp;|&nbsp; <span>STATUS:</span> ONLINE &nbsp;|&nbsp; <span>LOC:</span> ISLAMABAD·PK</div>
+  <div class="glitch-wrap">
+    <h1 class="hero-name" data-text="ABDUL SAMAD">ABDUL SAMAD</h1>
+  </div>
+  <div class="hero-sub">GRAPHIC · DESIGNER · CREATIVE</div>
+  <div class="typewriter-wrap">&gt;&nbsp;<span id="typeText"></span><span class="cblink"></span></div>
+  <div class="hero-metrics">
+    <div class="metric"><div class="metric-num" data-count="4" data-suffix="+">0</div><div class="metric-label">Years Active</div></div>
+    <div class="metric"><div class="metric-num" data-count="100" data-suffix="+">0</div><div class="metric-label">Projects Done</div></div>
+    <div class="metric"><div class="metric-num" data-count="3" data-suffix="">0</div><div class="metric-label">Languages</div></div>
+    <div class="metric"><div class="metric-num" data-count="5" data-suffix="★">0</div><div class="metric-label">Rating</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#portfolio" class="btn-neon"><span>VIEW WORK</span></a>
+    <a href="#contact" class="btn-ghost2">CONTACT ME</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-track">
+    <span>Logo Design</span><span class="sep">◈</span><span>Brand Identity</span><span class="sep">◈</span><span>Adobe Illustrator</span><span class="sep">◈</span><span>Social Media</span><span class="sep">◈</span><span>Web Design</span><span class="sep">◈</span><span>Typography</span><span class="sep">◈</span><span>Print Design</span><span class="sep">◈</span><span>Packaging</span><span class="sep">◈</span><span>Photoshop</span><span class="sep">◈</span><span>Webflow</span><span class="sep">◈</span>
+    <span>Logo Design</span><span class="sep">◈</span><span>Brand Identity</span><span class="sep">◈</span><span>Adobe Illustrator</span><span class="sep">◈</span><span>Social Media</span><span class="sep">◈</span><span>Web Design</span><span class="sep">◈</span><span>Typography</span><span class="sep">◈</span><span>Print Design</span><span class="sep">◈</span><span>Packaging</span><span class="sep">◈</span><span>Photoshop</span><span class="sep">◈</span><span>Webflow</span><span class="sep">◈</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-head reveal">
+    <div class="sec-tag">01 / WHAT I DO</div>
+    <div class="sec-title">MY <span class="hollow">SERVICES</span></div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="svc-grid reveal">
+    <div class="svc" data-num="//01"><div class="svc-icon">✦</div><div class="svc-title">LOGO DESIGN</div><div class="svc-desc">Unique memorable logos crafted to represent your brand. From concept to final vector — print and digital ready files delivered.</div></div>
+    <div class="svc" data-num="//02"><div class="svc-icon">◈</div><div class="svc-title">BRAND IDENTITY</div><div class="svc-desc">Complete visual identity systems — color palettes, typography, brand guidelines, and every collateral piece your business needs.</div></div>
+    <div class="svc" data-num="//03"><div class="svc-icon">⬡</div><div class="svc-title">SOCIAL GRAPHICS</div><div class="svc-desc">Eye-catching posts, stories and banners designed to stop the scroll and grow your presence across all major platforms.</div></div>
+    <div class="svc" data-num="//04"><div class="svc-icon">▣</div><div class="svc-title">PRINT DESIGN</div><div class="svc-desc">Brochures, flyers, business cards and packaging — print-ready designs that make a powerful real-world impression.</div></div>
+    <div class="svc" data-num="//05"><div class="svc-icon">◉</div><div class="svc-title">WEB DESIGN</div><div class="svc-desc">Clean, visually stunning websites using Webflow — designed to convert visitors and showcase your brand beautifully.</div></div>
+    <div class="svc" data-num="//06"><div class="svc-icon">❋</div><div class="svc-title">ILLUSTRATION</div><div class="svc-desc">Custom illustrations and graphic elements that bring personality and unique character to your brand or digital product.</div></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="sec-head reveal">
+    <div class="sec-tag">02 / SELECTED WORK</div>
+    <div class="sec-title">MY <span class="hollow">PROJECTS</span></div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="upload-zone reveal" id="uploadZone">
+    <input type="file" id="fileInput" accept="image/*" multiple/>
+    <div class="upload-icon">⬆</div>
+    <div class="upload-text">UPLOAD YOUR WORK</div>
+    <div class="upload-sub">// drag & drop or click — PNG · JPG · WEBP</div>
+  </div>
+  <div class="p-grid" id="pgrid">
+    <div class="p-item" id="ph1"><div class="ph-b"></div><div class="p-placeholder"><div class="ph-icon">✦</div><div class="ph-txt">// LOGO DESIGN PROJECT</div></div></div>
+    <div class="p-item" id="ph2"><div class="ph-b"></div><div class="p-placeholder"><div class="ph-icon">◈</div><div class="ph-txt">// BRAND IDENTITY</div></div></div>
+    <div class="p-item" id="ph3"><div class="ph-b"></div><div class="p-placeholder"><div class="ph-icon">⬡</div><div class="ph-txt">// SOCIAL MEDIA GRAPHICS</div></div></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-head reveal">
+    <div class="sec-tag">03 / EXPERTISE</div>
+    <div class="sec-title">SKILLS &amp; <span class="hollow">TOOLS</span></div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="sk-layout">
+    <div id="skillsCol" class="reveal">
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">LOGO & BRAND DESIGN</span><span class="skill-val">95%</span></div><div class="skill-track"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">ADOBE ILLUSTRATOR</span><span class="skill-val">92%</span></div><div class="skill-track"><div class="skill-fill" style="width:92%"></div></div></div>
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">ADOBE PHOTOSHOP</span><span class="skill-val">88%</span></div><div class="skill-track"><div class="skill-fill" style="width:88%"></div></div></div>
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">TYPOGRAPHY & COLOR</span><span class="skill-val">90%</span></div><div class="skill-track"><div class="skill-fill" style="width:90%"></div></div></div>
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">SOCIAL MEDIA GRAPHICS</span><span class="skill-val">93%</span></div><div class="skill-track"><div class="skill-fill" style="width:93%"></div></div></div>
+      <div class="skill-item"><div class="skill-head"><span class="skill-name">WEBFLOW / WEB DESIGN</span><span class="skill-val">80%</span></div><div class="skill-track"><div class="skill-fill" style="width:80%"></div></div></div>
+    </div>
+    <div class="reveal">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:3px;color:var(--muted);margin-bottom:18px;">// SOFTWARE ARSENAL</div>
+      <div class="hex-grid">
+        <div class="hex-tool"><span>🎨</span><span>ILLUSTRATOR</span></div>
+        <div class="hex-tool"><span>📷</span><span>PHOTOSHOP</span></div>
+        <div class="hex-tool"><span>📐</span><span>INDESIGN</span></div>
+        <div class="hex-tool"><span>🌐</span><span>WEBFLOW</span></div>
+        <div class="hex-tool"><span>🖌️</span><span>BRANDING</span></div>
+        <div class="hex-tool"><span>📦</span><span>PACKAGING</span></div>
+        <div class="hex-tool"><span>✍️</span><span>TYPOGRAPHY</span></div>
+        <div class="hex-tool"><span>📱</span><span>SOCIAL</span></div>
+        <div class="hex-tool"><span>⭐</span><span>PRINT</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-head reveal">
+    <div class="sec-tag">04 / THE STORY</div>
+    <div class="sec-title">ABOUT <span class="hollow">ME</span></div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ab-layout">
+    <div class="reveal">
+      <div class="about-text">
+        <p>I'm <strong>Abdul Samad</strong>, a graphic designer from Islamabad, Pakistan. Since 2020 I've been working as a freelancer, crafting visual identities and design solutions for clients worldwide.</p>
+        <p>My expertise spans <strong>logo design, brand identity, print design, social media graphics</strong>, and web design. I believe great design communicates the right message to the right audience.</p>
+        <p>Educated in Computer Science at Punjab College, I continuously sharpen my craft through hands-on client work and staying ahead of the latest design trends.</p>
+      </div>
+      <div class="ab-stats">
+        <div class="a-stat"><div class="a-num">4+</div><div class="a-label">Years Active</div></div>
+        <div class="a-stat"><div class="a-num">100+</div><div class="a-label">Projects</div></div>
+        <div class="a-stat"><div class="a-num">3</div><div class="a-label">Languages</div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="holo-card" id="holoCard">
+        <div class="holo-corner tl"></div><div class="holo-corner tr"></div>
+        <div class="holo-corner br"></div><div class="holo-corner bl"></div>
+        <div class="holo-name">A·SAMAD</div>
+        <div class="holo-role">// GRAPHIC DESIGNER · ISLAMABAD</div>
+        <div class="holo-langs"><span class="hlang">ENGLISH</span><span class="hlang">URDU</span><span class="hlang">HINDI</span></div>
+        <a href="https://samad-s-designs.webflow.io/" target="_blank" class="holo-link">VIEW WEBFLOW SITE ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-head reveal">
+    <div class="sec-tag">05 / GET IN TOUCH</div>
+    <div class="sec-title">LET'S <span class="hollow">WORK</span></div>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ct-layout">
+    <div class="reveal">
+      <div class="c-item"><div class="c-icon-box">📧</div><div><div class="c-lbl">EMAIL</div><div class="c-val"><a href="mailto:sattisamad235@gmail.com">sattisamad235@gmail.com</a></div></div></div>
+      <div class="c-item"><div class="c-icon-box">📱</div><div><div class="c-lbl">WHATSAPP</div><div class="c-val"><a href="tel:+923265609276">+92 326 5609276</a></div></div></div>
+      <div class="c-item"><div class="c-icon-box">📍</div><div><div class="c-lbl">LOCATION</div><div class="c-val">Islamabad, Pakistan</div></div></div>
+      <div class="c-item"><div class="c-icon-box">🌐</div><div><div class="c-lbl">PORTFOLIO</div><div class="c-val"><a href="https://samad-s-designs.webflow.io/" target="_blank">samad-s-designs.webflow.io</a></div></div></div>
+    </div>
+    <div class="reveal">
+      <div class="cform" id="cform">
+        <div class="frow">
+          <div class="fg"><label>// NAME</label><input type="text" placeholder="John Doe"/></div>
+          <div class="fg"><label>// EMAIL</label><input type="email" placeholder="you@email.com"/></div>
+        </div>
+        <div class="fg"><label>// PROJECT TYPE</label><input type="text" placeholder="Logo · Branding · Web…"/></div>
+        <div class="fg"><label>// MESSAGE</label><textarea placeholder="Tell me about your project…"></textarea></div>
+        <button class="sbtn" onclick="sendForm()"><span>TRANSMIT MESSAGE →</span></button>
+      </div>
+      <div class="form-ok" id="formOk">✦ &nbsp; MESSAGE RECEIVED — EXPECT REPLY WITHIN 24H</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">A·SAMAD</div>
+  <div class="f-copy">// © 2024 ABDUL SAMAD · ALL SYSTEMS ONLINE</div>
+  <div class="f-links"><a href="#services">SERVICES</a><a href="#portfolio">WORK</a><a href="#contact">CONTACT</a></div>
+</footer>
+
+<script>
+// ── LOADER
+setTimeout(()=>{
+  document.getElementById('loader').classList.add('done');
+  startCounters();
+  startTypewriter();
+},2300);
+
+// ── CURSOR
+const cRing=document.getElementById('cRing');
+const cCross=document.getElementById('cCross');
+const cDot=document.getElementById('cDot');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cCross.style.left=mx+'px';cCross.style.top=my+'px';
+  cDot.style.left=mx+'px';cDot.style.top=my+'px';
+});
+(function ar(){rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(ar);})();
+
+// ── PARTICLE CANVAS
+const canvas=document.getElementById('particleCanvas');
+const ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+resize();window.addEventListener('resize',resize);
+class P{
+  constructor(){this.reset();}
+  reset(){
+    this.x=Math.random()*W;this.y=Math.random()*H;
+    this.vx=(Math.random()-0.5)*0.35;this.vy=(Math.random()-0.5)*0.35;
+    this.life=Math.random();this.maxLife=0.5+Math.random()*0.5;
+    this.size=Math.random()*1.4+0.2;
+    const r=Math.random();
+    this.color=r<0.55?'0,240,255':r<0.75?'123,0,255':'255,0,110';
+  }
+  update(){this.x+=this.vx;this.y+=this.vy;this.life+=0.003;if(this.life>this.maxLife||this.x<0||this.x>W||this.y<0||this.y>H)this.reset();}
+  draw(){const a=Math.sin((this.life/this.maxLife)*Math.PI)*0.55;ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(${this.color},${a})`;ctx.fill();}
+}
+const particles=Array.from({length:100},()=>new P());
+function drawLines(){
+  for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if(d<90){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,240,255,${(1-d/90)*0.1})`;ctx.lineWidth=0.4;ctx.stroke();}
+  }
+}
+(function animP(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw();});drawLines();requestAnimationFrame(animP);})();
+
+// ── TYPEWRITER
+const phrases=['Crafting logos that speak...','Building brand experiences...','Designing to convert & impress...','Creating social graphics that pop...','Available for Fiverr projects.'];
+let pi=0,ci=0,del=false,typing=false;
+function startTypewriter(){typing=true;tick();}
+function tick(){
+  if(!typing)return;
+  const el=document.getElementById('typeText');
+  if(!del){el.textContent=phrases[pi].slice(0,++ci);if(ci===phrases[pi].length){del=true;setTimeout(tick,1400);return;}}
+  else{el.textContent=phrases[pi].slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}}
+  setTimeout(tick,del?38:78);
+}
+
+// ── COUNTERS
+function startCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.getAttribute('data-count');
+    const suffix=el.getAttribute('data-suffix')||'';
+    let c=0;const step=target/55;
+    const t=setInterval(()=>{c=Math.min(c+step,target);el.textContent=Math.floor(c)+suffix;if(c>=target)clearInterval(t);},28);
+  });
+}
+
+// ── SCROLL REVEAL
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(r=>ro.observe(r));
+
+// ── SKILL BARS
+const so=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){document.querySelectorAll('.skill-fill').forEach((f,i)=>setTimeout(()=>f.classList.add('on'),i*160));so.unobserve(e.target);}
+}),{threshold:0.25});
+so.observe(document.getElementById('skillsCol'));
+
+// ── HOLO CARD 3D TILT
+const hc=document.getElementById('holoCard');
+hc.addEventListener('mousemove',e=>{
+  const r=hc.getBoundingClientRect();
+  const rx2=((e.clientY-r.top)/r.height-0.5)*-14;
+  const ry2=((e.clientX-r.left)/r.width-0.5)*14;
+  hc.style.transform=`perspective(600px) rotateX(${rx2}deg) rotateY(${ry2}deg)`;
+});
+hc.addEventListener('mouseleave',()=>hc.style.transform='');
+
+// ── PORTFOLIO UPLOAD
+const fileInput=document.getElementById('fileInput');
+const pgrid=document.getElementById('pgrid');
+const uz=document.getElementById('uploadZone');
+const cats=['LOGO DESIGN','BRAND IDENTITY','SOCIAL MEDIA','PRINT DESIGN','WEB DESIGN','ILLUSTRATION'];
+function clearPH(){['ph1','ph2','ph3'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});}
+fileInput.addEventListener('change',e=>{clearPH();Array.from(e.target.files).forEach((f,i)=>{const r=new FileReader();r.onload=ev=>addItem(ev.target.result,f.name,cats[i%cats.length]);r.readAsDataURL(f);});});
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag-over');});
+uz.addEventListener('dragleave',()=>uz.classList.remove('drag-over'));
+uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag-over');clearPH();Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')).forEach((f,i)=>{const r=new FileReader();r.onload=ev=>addItem(ev.target.result,f.name,cats[i%cats.length]);r.readAsDataURL(f);});});
+function addItem(src,name,cat){
+  const el=document.createElement('div');el.className='p-item';
+  const title=name.replace(/\.[^/.]+$/,'').replace(/[-_]/g,' ').toUpperCase();
+  el.innerHTML=`<div class="p-scan"></div><img src="${src}" alt="${title}"/><div class="p-overlay"><div class="p-title">${title}</div><div class="p-cat">// ${cat}</div></div><button class="p-del" onclick="this.parentElement.remove()">✕</button>`;
+  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();const rx=((e.clientY-r.top)/r.height-0.5)*8;const ry=((e.clientX-r.left)/r.width-0.5)*-8;el.style.transform=`perspective(400px) rotateX(${rx}deg) rotateY(${ry}deg)`;});
+  el.addEventListener('mouseleave',()=>el.style.transform='');
+  pgrid.appendChild(el);
+}
+
+// ── CONTACT FORM
+function sendForm(){document.getElementById('cform').style.display='none';document.getElementById('formOk').style.display='block';}
+</script>
+</body>
+</html>
