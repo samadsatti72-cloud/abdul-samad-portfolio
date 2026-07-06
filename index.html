@@ -3,175 +3,207 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Abdul Samad Satti | AI & Machine Learning Engineer</title>
+    <title>Abdul Samad Satti — AI/ML Engineer & Designer</title>
     <meta
       name="description"
-      content="Premium portfolio of Abdul Samad Satti — AI & Machine Learning Engineer building scalable, production-ready intelligent systems."
+      content="Neo Editorial AI portfolio of Abdul Samad Satti. A unique blend of AI engineering, data systems, and visual design craft."
     />
-    <meta name="author" content="Abdul Samad Satti" />
-    <meta property="og:title" content="Abdul Samad Satti | AI & ML Engineer" />
+    <meta property="og:title" content="Abdul Samad Satti — Neo Editorial AI Portfolio" />
     <meta
       property="og:description"
-      content="Luxury minimal dark portfolio with subtle futuristic AI aesthetics."
+      content="AI/ML systems engineer + graphic design strategist. Distinctive portfolio experience."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./assets/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#0A0C12" />
+    <meta name="theme-color" content="#0d0f14" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
-    <div class="noise" aria-hidden="true"></div>
-    <canvas id="orbital" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
 
-    <header class="nav-wrap">
-      <nav class="nav glass" aria-label="Primary navigation">
-        <a class="brand" href="#hero">Abdul Samad Satti</a>
-        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">☰</button>
-        <div class="nav-links" id="navLinks">
+    <header class="header">
+      <div class="container nav-shell">
+        <a href="#home" class="logo">ASS / AI SYSTEMS</a>
+        <button id="menuBtn" class="menu-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <nav id="menu" class="menu" aria-label="Primary">
           <a href="#about">About</a>
+          <a href="#capabilities">Capabilities</a>
           <a href="#projects">Projects</a>
           <a href="#experience">Experience</a>
           <a href="#contact">Contact</a>
-          <a class="btn mini" href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer"
+          <a href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer" class="pill"
             >GitHub</a
           >
-        </div>
-      </nav>
+        </nav>
+      </div>
     </header>
 
-    <main>
-      <section id="hero" class="hero section">
-        <div class="container hero-grid">
-          <div>
-            <p class="overline">AI / ML ENGINEERING PORTFOLIO</p>
+    <main id="home">
+      <section class="hero section">
+        <div class="container hero-layout">
+          <div class="hero-left">
+            <p class="kicker">NEO EDITORIAL • AI / ML ENGINEERING • DESIGN STRATEGY</p>
             <h1>
-              Luxury-grade design.<br />
-              <span>Production-grade intelligence.</span>
+              I design intelligent<br />
+              systems with <span>engineering precision</span><br />
+              and visual direction.
             </h1>
-            <p class="hero-copy">
-              I’m Abdul Samad Satti, an AI & Machine Learning Engineer focused on creating scalable systems,
-              robust APIs, and applied intelligence products that solve high-impact real-world problems.
+            <p class="intro">
+              Abdul Samad Satti — AI & Machine Learning Engineer, Data Scientist, and Graphic Design
+              Strategist. I build production-grade AI products that are technically robust and aesthetically
+              intentional.
             </p>
-            <div class="hero-cta">
-              <a href="#projects" class="btn primary">Explore Projects</a>
-              <a href="#contact" class="btn secondary">Let’s Collaborate</a>
+            <div class="cta-row">
+              <a href="#projects" class="btn btn-solid">View Case Studies</a>
+              <a href="#contact" class="btn btn-outline">Work With Me</a>
             </div>
-            <div class="stat-row">
-              <article class="stat glass"><strong>3+</strong><span>Major AI Systems</span></article>
-              <article class="stat glass"><strong>FastAPI</strong><span>Backend Specialty</span></article>
-              <article class="stat glass"><strong>LLMs</strong><span>Applied Intelligence</span></article>
+
+            <div class="signal-strip">
+              <article><strong>FASTAPI</strong><span>System APIs</span></article>
+              <article><strong>LLMs</strong><span>Applied Intelligence</span></article>
+              <article><strong>DATA</strong><span>Prediction Pipelines</span></article>
             </div>
           </div>
 
-          <aside class="hero-card glass">
-            <div class="profile-wrap">
+          <aside class="hero-right card">
+            <div class="portrait-wrap">
               <img src="./assets/profile.svg" alt="Abdul Samad Satti avatar" />
             </div>
-            <h2>Abdul Samad Satti</h2>
-            <p>AI & Machine Learning Engineer | Data Scientist | Full-Stack AI Developer</p>
-            <ul>
-              <li>Islamabad, Pakistan (UTC+5)</li>
-              <li><a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a></li>
-              <li>
-                <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
-                  >LinkedIn Profile</a
-                >
-              </li>
-            </ul>
+            <div class="id-grid">
+              <p class="name">Abdul Samad Satti</p>
+              <p class="role">AI/ML Engineer • Data Scientist • Full-Stack AI Developer</p>
+              <p>Islamabad, Pakistan (UTC+5)</p>
+              <a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a>
+              <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
+                >LinkedIn</a
+              >
+            </div>
           </aside>
         </div>
       </section>
 
       <section id="about" class="section">
-        <div class="container split">
-          <article class="panel glass">
-            <h3>About</h3>
+        <div class="container editorial-grid">
+          <article class="card block-lg">
+            <p class="eyebrow">ABOUT</p>
+            <h2>From data complexity to deployable intelligence.</h2>
             <p>
-              I am an aspiring Artificial Intelligence engineer and Data Scientist dedicated to building
-              intelligent, scalable solutions that bridge complex data and user-centric applications. From
-              legal-tender intelligence systems to predictive sports modeling and full-stack civic systems,
-              I focus on clean architecture, measurable impact, and deployable quality.
+              I specialize in translating complex problem spaces into clean system architecture and reliable
+              AI workflows. I’ve built legal document intelligence tools, predictive sports pipelines, and
+              full-stack data systems with practical impact and scalable code quality.
             </p>
           </article>
-          <article class="panel glass">
-            <h3>Core Stack</h3>
-            <div class="stack-list">
-              <span>Python</span><span>FastAPI</span><span>LLMs</span><span>Ollama</span><span>Scikit-learn</span
-              ><span>Pandas</span><span>React</span><span>SQL</span><span>Docker</span><span>Vercel</span>
-            </div>
+
+          <article class="card block-sm">
+            <p class="eyebrow">DESIGN RULESET</p>
+            <ul>
+              <li>Hierarchy-first composition</li>
+              <li>Asymmetric editorial layouts</li>
+              <li>Controlled futuristic motion</li>
+              <li>High-contrast readability</li>
+              <li>Systematic spacing scale</li>
+            </ul>
           </article>
+        </div>
+      </section>
+
+      <section id="capabilities" class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">CAPABILITIES</p>
+            <h2>Technical depth with product-level execution.</h2>
+          </div>
+
+          <div class="caps">
+            <article class="card cap">
+              <h3>AI System Architecture</h3>
+              <p>Designing robust pipelines from ingestion to inference with measurable output quality.</p>
+              <div class="tags"><span>LLMs</span><span>Ollama</span><span>Prompt Ops</span></div>
+            </article>
+            <article class="card cap">
+              <h3>Backend Engineering</h3>
+              <p>Fast, maintainable API layers and asynchronous services for production environments.</p>
+              <div class="tags"><span>FastAPI</span><span>Python</span><span>Docker</span></div>
+            </article>
+            <article class="card cap">
+              <h3>Data & Predictive Modeling</h3>
+              <p>Statistical and machine learning workflows for forecasting and pattern intelligence.</p>
+              <div class="tags"><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span></div>
+            </article>
+            <article class="card cap">
+              <h3>Visual Product Thinking</h3>
+              <p>Graphic design strategy applied to product interfaces and communication systems.</p>
+              <div class="tags"><span>Branding</span><span>UI Composition</span><span>Visual Systems</span></div>
+            </article>
+          </div>
         </div>
       </section>
 
       <section id="projects" class="section">
         <div class="container">
           <div class="section-head">
-            <h3>Selected Work</h3>
-            <p>Precision-built solutions at the intersection of AI, data, and product engineering.</p>
+            <p class="eyebrow">SELECTED PROJECTS</p>
+            <h2>Case-study style engineering.</h2>
           </div>
 
           <div class="projects">
-            <article class="project glass">
-              <div class="project-top">
-                <span class="chip">AI DOCUMENT INTELLIGENCE</span>
-                <span class="line"></span>
+            <article class="project card tilt">
+              <div class="project-head">
+                <span class="status">SYSTEM: ACTIVE</span>
+                <h3>BidEngine AI</h3>
               </div>
-              <h4>BidEngine AI</h4>
               <p>
-                Built an end-to-end tender parsing platform with asynchronous ingestion, background workers,
-                and LLM-driven extraction of legal constraints and bid requirements.
+                End-to-end legal tender intelligence system with async parsing workers and LLM extraction
+                for actionable bidding constraints.
               </p>
-              <div class="meta">
-                <span>FastAPI</span><span>Python</span><span>Ollama</span><span>Parsers</span>
-              </div>
+              <div class="meta"><span>FastAPI</span><span>Python</span><span>Ollama</span></div>
               <a href="https://github.com/samadsatti72-cloud/BidEngine-AI" target="_blank" rel="noreferrer"
-                >View Repository →</a
+                >Open Repository →</a
               >
             </article>
 
-            <article class="project glass">
-              <div class="project-top">
-                <span class="chip">PREDICTIVE MODELING</span>
-                <span class="line"></span>
+            <article class="project card tilt">
+              <div class="project-head">
+                <span class="status">MODEL: PREDICTIVE</span>
+                <h3>T20 World Cup 2026 Predictor</h3>
               </div>
-              <h4>T20 World Cup 2026 Predictor</h4>
               <p>
-                Designed a simulation and prediction pipeline using historical metrics, team/player dynamics,
-                and ML-assisted tournament progression forecasting.
+                Tournament simulation and outcome forecasting pipeline built on historical team and player
+                performance data.
               </p>
-              <div class="meta">
-                <span>Python</span><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span>
-              </div>
+              <div class="meta"><span>Scikit-learn</span><span>Pandas</span><span>Matplotlib</span></div>
               <a
                 href="https://github.com/samadsatti72-cloud/T20_WORLDCUP-2026-PREDICTOR"
                 target="_blank"
                 rel="noreferrer"
-                >View Repository →</a
+                >Open Repository →</a
               >
             </article>
 
-            <article class="project glass">
-              <div class="project-top">
-                <span class="chip">FULL-STACK SYSTEM</span>
-                <span class="line"></span>
+            <article class="project card tilt">
+              <div class="project-head">
+                <span class="status">PLATFORM: DEPLOYABLE</span>
+                <h3>Adaal AI</h3>
               </div>
-              <h4>Adaal AI</h4>
               <p>
-                Engineered a secure crime-management platform with optimized SQL architecture, streamlined
-                case indexing, and an analytics-focused React frontend.
+                Full-stack crime management platform with optimized SQL schema, secure records flow, and
+                analytics-oriented UX.
               </p>
-              <div class="meta"><span>React</span><span>Node.js</span><span>Express</span><span>SQL</span></div>
+              <div class="meta"><span>React</span><span>Node.js</span><span>SQL</span></div>
               <a href="https://github.com/samadsatti72-cloud/Adaal-AI" target="_blank" rel="noreferrer"
-                >View Repository →</a
+                >Open Repository →</a
               >
             </article>
           </div>
@@ -179,65 +211,67 @@
       </section>
 
       <section id="experience" class="section">
-        <div class="container timeline">
-          <h3>Experience</h3>
-          <article class="entry glass">
-            <div>
-              <h4>AI Hackathon Competitor & Open Source Contributor</h4>
-              <p class="muted">Independent / Tech Hackathons · 2025 — Present</p>
-            </div>
-            <ul>
-              <li>Shipped rapid AI MVPs under strict timelines with deployable architecture.</li>
-              <li>Developed FastAPI microservices and integrated localized LLM workflows.</li>
-              <li>Contributed to OSS projects using clean branching and collaborative Git strategy.</li>
-            </ul>
-          </article>
+        <div class="container timeline-wrap">
+          <div class="section-head">
+            <p class="eyebrow">EXPERIENCE</p>
+            <h2>Execution under real constraints.</h2>
+          </div>
 
-          <article class="entry glass">
-            <div>
-              <h4>Freelance Graphic Designer & Brand Strategist</h4>
+          <div class="timeline">
+            <article class="card node">
+              <h3>AI Hackathon Competitor & Open Source Contributor</h3>
+              <p class="muted">Independent / Tech Hackathons · 2025 — Present</p>
+              <ul>
+                <li>Built rapid AI MVPs with deployment-ready architecture.</li>
+                <li>Developed FastAPI microservices and localized LLM integrations.</li>
+                <li>Contributed to open-source with clean Git workflows.</li>
+              </ul>
+            </article>
+
+            <article class="card node">
+              <h3>Freelance Graphic Designer & Brand Strategist</h3>
               <p class="muted">Fiverr / Upwork · 2025 — Present</p>
-            </div>
-            <ul>
-              <li>Created complete brand identity systems and campaign-ready visual assets.</li>
-              <li>Worked with global clients to convert requirements into high-impact design outputs.</li>
-              <li>Managed timelines, communication loops, and delivery quality independently.</li>
-            </ul>
-          </article>
+              <ul>
+                <li>Designed brand systems and high-impact visual campaigns.</li>
+                <li>Translated client requirements into strategic visual communication.</li>
+                <li>Managed project delivery lifecycle end-to-end.</li>
+              </ul>
+            </article>
+          </div>
         </div>
       </section>
 
       <section id="contact" class="section">
-        <div class="container contact">
-          <article class="panel glass">
-            <h3>Contact</h3>
+        <div class="container contact-layout">
+          <article class="card contact-card">
+            <p class="eyebrow">CONTACT</p>
+            <h2>Let’s build something meaningful.</h2>
             <p>
-              Open to AI/ML internships, collaborations, and freelance opportunities. Let’s build intelligent
-              systems with real-world value.
+              Open for AI/ML collaborations, internships, and product-focused freelance opportunities.
             </p>
             <p><a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a></p>
             <p>
-              <a href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer">GitHub</a>
-              ·
+              <a href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer">GitHub</a> ·
               <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
                 >LinkedIn</a
               >
             </p>
           </article>
 
-          <form class="panel glass form" action="https://formspree.io/f/xblyznqr" method="POST">
-            <h3>Start a Conversation</h3>
+          <form class="card form" action="https://formspree.io/f/xblyznqr" method="POST">
             <label>Name<input type="text" name="name" required /></label>
             <label>Email<input type="email" name="email" required /></label>
             <label>Message<textarea name="message" rows="5" required></textarea></label>
-            <button class="btn primary" type="submit">Send Message</button>
+            <button type="submit" class="btn btn-solid">Send Message</button>
           </form>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p>© <span id="year"></span> Abdul Samad Satti — Designed with intent. Engineered for impact.</p>
+      <div class="container">
+        <p>© <span id="year"></span> Abdul Samad Satti — Neo Editorial AI Portfolio.</p>
+      </div>
     </footer>
   </body>
 </html>
