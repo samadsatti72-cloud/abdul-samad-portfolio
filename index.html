@@ -6,161 +6,107 @@
     <title>Abdul Samad Satti | AI & Machine Learning Engineer</title>
     <meta
       name="description"
-      content="AI & Machine Learning Engineer portfolio of Abdul Samad Satti. Projects in LLMs, predictive modeling, FastAPI, and full-stack AI solutions."
-    />
-    <meta
-      name="keywords"
-      content="Abdul Samad Satti, AI Engineer, Machine Learning Engineer, Data Scientist, FastAPI, LLM, Portfolio"
+      content="Premium portfolio of Abdul Samad Satti — AI & Machine Learning Engineer building scalable, production-ready intelligent systems."
     />
     <meta name="author" content="Abdul Samad Satti" />
     <meta property="og:title" content="Abdul Samad Satti | AI & ML Engineer" />
     <meta
       property="og:description"
-      content="Professional AI/ML portfolio featuring real-world projects, experience, and contact details."
+      content="Luxury minimal dark portfolio with subtle futuristic AI aesthetics."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://abdul-samad-portfolio.vercel.app" />
     <meta property="og:image" content="./assets/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Abdul Samad Satti | AI & ML Engineer" />
-    <meta
-      name="twitter:description"
-      content="AI & Machine Learning Engineer | Data Scientist | Full-Stack AI Developer"
-    />
-    <meta name="theme-color" content="#0B0F19" />
+    <meta name="theme-color" content="#0A0C12" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
-    <div class="bg-grid" aria-hidden="true"></div>
-    <canvas id="network-canvas" aria-hidden="true"></canvas>
+    <div class="noise" aria-hidden="true"></div>
+    <canvas id="orbital" aria-hidden="true"></canvas>
 
-    <a class="skip-link" href="#main">Skip to content</a>
-
-    <aside class="dock" aria-label="Section navigation">
-      <nav>
-        <a href="#hero" class="dock-item active" data-label="Home" aria-label="Home">
-          <span>⌂</span>
-        </a>
-        <a href="#about" class="dock-item" data-label="About" aria-label="About">
-          <span>◉</span>
-        </a>
-        <a href="#skills" class="dock-item" data-label="Skills" aria-label="Skills">
-          <span>⚙</span>
-        </a>
-        <a href="#projects" class="dock-item" data-label="Projects" aria-label="Projects">
-          <span>▣</span>
-        </a>
-        <a href="#experience" class="dock-item" data-label="Experience" aria-label="Experience">
-          <span>⌁</span>
-        </a>
-        <a href="#education" class="dock-item" data-label="Education" aria-label="Education">
-          <span>⟐</span>
-        </a>
-        <a href="#contact" class="dock-item" data-label="Contact" aria-label="Contact">
-          <span>✉</span>
-        </a>
+    <header class="nav-wrap">
+      <nav class="nav glass" aria-label="Primary navigation">
+        <a class="brand" href="#hero">Abdul Samad Satti</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+          <a class="btn mini" href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer"
+            >GitHub</a
+          >
+        </div>
       </nav>
-    </aside>
-
-    <header class="topbar glass">
-      <div class="logo terminal-text">$ abdul_samad_portfolio</div>
-      <div class="top-actions">
-        <a class="btn ghost" href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="btn solid" href="#contact">Hire Me</a>
-      </div>
     </header>
 
-    <main id="main">
-      <section id="hero" class="section hero">
-        <div class="hero-inner">
-          <div class="avatar-wrap">
-            <div class="avatar-glow"></div>
-            <img
-              src="./assets/profile.svg"
-              alt="Illustration avatar for Abdul Samad Satti"
-              class="avatar"
-              loading="eager"
-            />
+    <main>
+      <section id="hero" class="hero section">
+        <div class="container hero-grid">
+          <div>
+            <p class="overline">AI / ML ENGINEERING PORTFOLIO</p>
+            <h1>
+              Luxury-grade design.<br />
+              <span>Production-grade intelligence.</span>
+            </h1>
+            <p class="hero-copy">
+              I’m Abdul Samad Satti, an AI & Machine Learning Engineer focused on creating scalable systems,
+              robust APIs, and applied intelligence products that solve high-impact real-world problems.
+            </p>
+            <div class="hero-cta">
+              <a href="#projects" class="btn primary">Explore Projects</a>
+              <a href="#contact" class="btn secondary">Let’s Collaborate</a>
+            </div>
+            <div class="stat-row">
+              <article class="stat glass"><strong>3+</strong><span>Major AI Systems</span></article>
+              <article class="stat glass"><strong>FastAPI</strong><span>Backend Specialty</span></article>
+              <article class="stat glass"><strong>LLMs</strong><span>Applied Intelligence</span></article>
+            </div>
           </div>
-          <p class="eyebrow">Islamabad, Pakistan (PKT / UTC+5)</p>
-          <h1>Abdul Samad Satti</h1>
-          <h2>
-            <span id="typing"></span><span class="cursor" aria-hidden="true">▌</span>
-          </h2>
-          <p class="lead">
-            I build intelligent, scalable AI systems that transform complex data into production-ready,
-            user-centric applications.
-          </p>
-          <div class="hero-cta">
-            <a href="#projects" class="btn solid">View My Work</a>
-            <a href="./assets/Abdul_Samad_Satti_Resume_OnePager.md" class="btn ghost" download>
-              Download CV
-            </a>
-          </div>
+
+          <aside class="hero-card glass">
+            <div class="profile-wrap">
+              <img src="./assets/profile.svg" alt="Abdul Samad Satti avatar" />
+            </div>
+            <h2>Abdul Samad Satti</h2>
+            <p>AI & Machine Learning Engineer | Data Scientist | Full-Stack AI Developer</p>
+            <ul>
+              <li>Islamabad, Pakistan (UTC+5)</li>
+              <li><a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a></li>
+              <li>
+                <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
+                  >LinkedIn Profile</a
+                >
+              </li>
+            </ul>
+          </aside>
         </div>
       </section>
 
       <section id="about" class="section">
-        <div class="container glass">
-          <h3>About</h3>
-          <p>
-            I am an aspiring Artificial Intelligence engineer and Data Scientist dedicated to building
-            intelligent, scalable solutions that bridge the gap between complex data and user-centric
-            applications. With hands-on experience developing specialized AI-driven platforms, parsing
-            complex legal data, and engineering robust backend systems, I thrive on turning raw algorithms
-            into production-ready software. Passionate about MLOps, automation, and continuous learning in
-            the evolving AI landscape.
-          </p>
-        </div>
-      </section>
-
-      <section id="skills" class="section">
-        <div class="container skills-grid">
-          <article class="glass panel">
-            <h3>Core Skills</h3>
-            <ul class="chips">
-              <li>Python</li>
-              <li>C++</li>
-              <li>SQL</li>
-              <li>FastAPI</li>
-              <li>React</li>
-              <li>NumPy</li>
-              <li>Pandas</li>
-              <li>Scikit-learn</li>
-              <li>Matplotlib</li>
-              <li>Ollama</li>
-              <li>LLMs</li>
-              <li>Docker</li>
-              <li>Git</li>
-              <li>GitHub</li>
-              <li>Vercel</li>
-            </ul>
+        <div class="container split">
+          <article class="panel glass">
+            <h3>About</h3>
+            <p>
+              I am an aspiring Artificial Intelligence engineer and Data Scientist dedicated to building
+              intelligent, scalable solutions that bridge complex data and user-centric applications. From
+              legal-tender intelligence systems to predictive sports modeling and full-stack civic systems,
+              I focus on clean architecture, measurable impact, and deployable quality.
+            </p>
           </article>
-          <article class="glass panel">
-            <h3>AI/ML Proficiency</h3>
-            <div class="metric">
-              <span>Model Development</span>
-              <div class="bar"><i style="--w: 92%"></i></div>
-            </div>
-            <div class="metric">
-              <span>Data Engineering</span>
-              <div class="bar"><i style="--w: 86%"></i></div>
-            </div>
-            <div class="metric">
-              <span>Backend APIs</span>
-              <div class="bar"><i style="--w: 90%"></i></div>
-            </div>
-            <div class="metric">
-              <span>MLOps & Deployment</span>
-              <div class="bar"><i style="--w: 82%"></i></div>
+          <article class="panel glass">
+            <h3>Core Stack</h3>
+            <div class="stack-list">
+              <span>Python</span><span>FastAPI</span><span>LLMs</span><span>Ollama</span><span>Scikit-learn</span
+              ><span>Pandas</span><span>React</span><span>SQL</span><span>Docker</span><span>Vercel</span>
             </div>
           </article>
         </div>
@@ -168,53 +114,64 @@
 
       <section id="projects" class="section">
         <div class="container">
-          <h3>Featured Projects</h3>
-          <div class="project-grid">
-            <article class="glass project-card">
-              <p class="badge">[ STATUS: DEPLOYED ]</p>
+          <div class="section-head">
+            <h3>Selected Work</h3>
+            <p>Precision-built solutions at the intersection of AI, data, and product engineering.</p>
+          </div>
+
+          <div class="projects">
+            <article class="project glass">
+              <div class="project-top">
+                <span class="chip">AI DOCUMENT INTELLIGENCE</span>
+                <span class="line"></span>
+              </div>
               <h4>BidEngine AI</h4>
               <p>
-                Built an end-to-end AI-powered document intelligence system for legal tender parsing with
-                asynchronous background workers and Ollama-based LLM extraction pipelines.
+                Built an end-to-end tender parsing platform with asynchronous ingestion, background workers,
+                and LLM-driven extraction of legal constraints and bid requirements.
               </p>
-              <div class="tags">
+              <div class="meta">
                 <span>FastAPI</span><span>Python</span><span>Ollama</span><span>Parsers</span>
               </div>
               <a href="https://github.com/samadsatti72-cloud/BidEngine-AI" target="_blank" rel="noreferrer"
-                >View Repository ↗</a
+                >View Repository →</a
               >
             </article>
 
-            <article class="glass project-card">
-              <p class="badge">[ ACCURACY: 94% ]</p>
+            <article class="project glass">
+              <div class="project-top">
+                <span class="chip">PREDICTIVE MODELING</span>
+                <span class="line"></span>
+              </div>
               <h4>T20 World Cup 2026 Predictor</h4>
               <p>
-                Developed a predictive modeling pipeline using historical team/player metrics to simulate
-                tournament outcomes and detect performance trends.
+                Designed a simulation and prediction pipeline using historical metrics, team/player dynamics,
+                and ML-assisted tournament progression forecasting.
               </p>
-              <div class="tags">
+              <div class="meta">
                 <span>Python</span><span>Pandas</span><span>NumPy</span><span>Scikit-learn</span>
               </div>
               <a
                 href="https://github.com/samadsatti72-cloud/T20_WORLDCUP-2026-PREDICTOR"
                 target="_blank"
                 rel="noreferrer"
-                >View Repository ↗</a
+                >View Repository →</a
               >
             </article>
 
-            <article class="glass project-card">
-              <p class="badge">[ STATUS: PRODUCTION READY ]</p>
-              <h4>Adaal AI (Crime Management System)</h4>
-              <p>
-                Engineered a full-stack crime management system with optimized relational schema, analytics
-                dashboard, and secure case tracking workflows.
-              </p>
-              <div class="tags">
-                <span>React</span><span>Node.js</span><span>Express</span><span>SQL</span>
+            <article class="project glass">
+              <div class="project-top">
+                <span class="chip">FULL-STACK SYSTEM</span>
+                <span class="line"></span>
               </div>
+              <h4>Adaal AI</h4>
+              <p>
+                Engineered a secure crime-management platform with optimized SQL architecture, streamlined
+                case indexing, and an analytics-focused React frontend.
+              </p>
+              <div class="meta"><span>React</span><span>Node.js</span><span>Express</span><span>SQL</span></div>
               <a href="https://github.com/samadsatti72-cloud/Adaal-AI" target="_blank" rel="noreferrer"
-                >View Repository ↗</a
+                >View Repository →</a
               >
             </article>
           </div>
@@ -222,106 +179,65 @@
       </section>
 
       <section id="experience" class="section">
-        <div class="container">
+        <div class="container timeline">
           <h3>Experience</h3>
-          <div class="timeline">
-            <article class="glass timeline-item">
+          <article class="entry glass">
+            <div>
               <h4>AI Hackathon Competitor & Open Source Contributor</h4>
-              <p class="muted">Independent / Tech Hackathons | 2025 – Present</p>
-              <ul>
-                <li>Engineered MVPs under strict deadlines across AI backend + deployment workflows.</li>
-                <li>
-                  Architected FastAPI microservices with localized LLM integration and multi-source data
-                  preprocessing pipelines.
-                </li>
-                <li>Contributed to open-source projects with collaborative Git workflows.</li>
-              </ul>
-            </article>
-
-            <article class="glass timeline-item">
-              <h4>Freelance Graphic Designer & Brand Strategist</h4>
-              <p class="muted">Fiverr / Upwork | 2025 – Present</p>
-              <ul>
-                <li>Designed complete brand identity systems, logos, and commercial visual assets.</li>
-                <li>Collaborated with global clients to transform business requirements into visuals.</li>
-                <li>Managed timelines, communication, and delivery pipelines independently.</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="education" class="section">
-        <div class="container edu-grid">
-          <article class="glass panel">
-            <h3>Education</h3>
-            <h4>BS in Artificial Intelligence</h4>
-            <p>Capital University of Science and Technology, Pakistan</p>
-            <p class="muted">Expected Graduation: 2028</p>
-            <p class="muted">Registration No: bai243084</p>
-          </article>
-          <article class="glass panel">
-            <h3>Now Learning</h3>
+              <p class="muted">Independent / Tech Hackathons · 2025 — Present</p>
+            </div>
             <ul>
-              <li>Agentic AI architectures and evaluation workflows</li>
-              <li>RAG optimization and retrieval quality tuning</li>
-              <li>MLOps pipelines for model monitoring and reliability</li>
-              <li>Cloud deployment best practices for AI services</li>
+              <li>Shipped rapid AI MVPs under strict timelines with deployable architecture.</li>
+              <li>Developed FastAPI microservices and integrated localized LLM workflows.</li>
+              <li>Contributed to OSS projects using clean branching and collaborative Git strategy.</li>
+            </ul>
+          </article>
+
+          <article class="entry glass">
+            <div>
+              <h4>Freelance Graphic Designer & Brand Strategist</h4>
+              <p class="muted">Fiverr / Upwork · 2025 — Present</p>
+            </div>
+            <ul>
+              <li>Created complete brand identity systems and campaign-ready visual assets.</li>
+              <li>Worked with global clients to convert requirements into high-impact design outputs.</li>
+              <li>Managed timelines, communication loops, and delivery quality independently.</li>
             </ul>
           </article>
         </div>
       </section>
 
       <section id="contact" class="section">
-        <div class="container contact-grid">
-          <article class="glass panel">
-            <h3>Let’s Build Something Intelligent</h3>
+        <div class="container contact">
+          <article class="panel glass">
+            <h3>Contact</h3>
             <p>
-              Open to AI/ML internships, freelance collaborations, and innovative research/development
-              projects.
+              Open to AI/ML internships, collaborations, and freelance opportunities. Let’s build intelligent
+              systems with real-world value.
             </p>
-            <ul class="contact-list">
-              <li>Email: <a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a></li>
-              <li>
-                LinkedIn:
-                <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
-                  >abdulsamadsatti</a
-                >
-              </li>
-              <li>
-                GitHub:
-                <a href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer"
-                  >samadsatti72-cloud</a
-                >
-              </li>
-            </ul>
+            <p><a href="mailto:smadsatti72@gmail.com">smadsatti72@gmail.com</a></p>
+            <p>
+              <a href="https://github.com/samadsatti72-cloud" target="_blank" rel="noreferrer">GitHub</a>
+              ·
+              <a href="https://www.linkedin.com/in/abdulsamadsatti/" target="_blank" rel="noreferrer"
+                >LinkedIn</a
+              >
+            </p>
           </article>
 
-          <article class="glass panel">
-            <h3>Contact Form</h3>
-            <form action="https://formspree.io/f/xblyznqr" method="POST" class="contact-form">
-              <label>
-                Name
-                <input type="text" name="name" required />
-              </label>
-              <label>
-                Email
-                <input type="email" name="email" required />
-              </label>
-              <label>
-                Message
-                <textarea name="message" rows="5" required></textarea>
-              </label>
-              <button type="submit" class="btn solid">Send Message</button>
-              <p class="muted small">Form powered by Formspree (replace endpoint if needed).</p>
-            </form>
-          </article>
+          <form class="panel glass form" action="https://formspree.io/f/xblyznqr" method="POST">
+            <h3>Start a Conversation</h3>
+            <label>Name<input type="text" name="name" required /></label>
+            <label>Email<input type="email" name="email" required /></label>
+            <label>Message<textarea name="message" rows="5" required></textarea></label>
+            <button class="btn primary" type="submit">Send Message</button>
+          </form>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p>© <span id="year"></span> Abdul Samad Satti · Built with precision, deployed with confidence.</p>
+      <p>© <span id="year"></span> Abdul Samad Satti — Designed with intent. Engineered for impact.</p>
     </footer>
   </body>
 </html>
